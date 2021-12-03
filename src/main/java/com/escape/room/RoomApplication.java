@@ -1,15 +1,12 @@
 package com.escape.room;
 
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.escape.room.crawling.Crawling;
+import com.escape.room.crawling.store.MurderParker;
+import com.escape.room.crawling.store.NextEdition;
+import com.escape.room.crawling.store.SecretGarden;
+import com.escape.room.crawling.store.ZeroWorld;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.io.IOException;
-import java.util.Iterator;
 
 @SpringBootApplication
 public class RoomApplication {
@@ -17,21 +14,14 @@ public class RoomApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RoomApplication.class, args);
 
-		final String url = "https://www.nextedition.co.kr/shops/NextEdition%20Gangnam";
+		String nextEdition =  "https://www.nextedition.co.kr/shops/NextEdition%20Gangnam"; // 강남점
+		String zeroWorld =  "https://www.zerogangnam.com/reservation/43"; // 강남점
+		String secretGarden =  "http://secretgardenescape.com/reservation.html?k_shopno=9"; // 강남점
+		String xPhobia =  "https://www.xphobia.net/reservation/reservation_check.php";
+		String murderParker =  "http://murderparker.com/m/sub_02/sub02_1.html?JIJEM=S9"; // 홍대점
 
-		Connection conn = Jsoup.connect(url);
-
-		try{
-			Document document = conn.get();
-			Elements elements = document.select("h2[class=\" mb5 font700\"]");
-
-			for (Element element : elements) {
-				System.out.println("element = " + element.text());
-			}
-
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+		Crawling crawling = new MurderParker();
+		crawling.crawling(murderParker);
 
 	}
 
