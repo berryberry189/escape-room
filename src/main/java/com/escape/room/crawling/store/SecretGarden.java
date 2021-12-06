@@ -1,6 +1,7 @@
 package com.escape.room.crawling.store;
 
 import com.escape.room.crawling.Crawling;
+import com.escape.room.crawling.dto.ProgramResponse;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -8,11 +9,15 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SecretGarden implements Crawling {
 
     @Override
-    public void crawling(String url){
+    public List<ProgramResponse> crawling(String url){
+
+        List<ProgramResponse> responses = new ArrayList<>();
 
         Connection conn = Jsoup.connect(url);
 
@@ -43,5 +48,7 @@ public class SecretGarden implements Crawling {
         }catch(IOException e){
             e.printStackTrace();
         }
+
+        return responses;
     }
 }

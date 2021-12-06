@@ -10,6 +10,6 @@ import java.util.List;
 public class ProgramResponse {
 
     private Long id;
-    private String name;
+    private String programTitle;
     private List<String> timeInfoList;
 }
