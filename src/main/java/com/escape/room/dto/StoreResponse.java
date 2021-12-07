@@ -1,7 +1,6 @@
 package com.escape.room.dto;
 
 import com.escape.room.entity.Store;
-import com.escape.room.repository.StoreRepository;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
