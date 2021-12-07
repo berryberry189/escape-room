@@ -1,4 +1,4 @@
-package com.escape.room.crawling.dto;
+package com.escape.room.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,6 +10,6 @@ import java.util.List;
 public class ProgramResponse {
 
     private Long id;
-    private String programTitle;
+    private String title;
     private List<String> timeInfoList;
 }
