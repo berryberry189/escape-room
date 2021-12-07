@@ -18,10 +18,4 @@ public class Store {
     private Long id;
 
     private String name;
-
-    private String url;
-
-    public Store(String name) {
-        this.name = name;
-    }
 }

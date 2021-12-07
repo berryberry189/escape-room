@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>main</title>
+</head>
+<body>
+<ul>
+    <th:block th:each="store : ${storeList}">
+        <li> <span th:text="${store.name}"></span>
+            <th:block th:each="branch : ${store.branchList}">
+                <ul>
+                    <li>
+                        <a th:href="@{/reserve/{storeId}/{branchId}(storeId=${store.id}, branchId=${branch.id})}">
+                            <span th:text="${branch.name}"></span>
+                        </a>
+                    </li>
+                </ul>
+            </th:block>
+        </li>
+        <br>
+    </th:block>
+</ul>
+
+</body>
+</html>
