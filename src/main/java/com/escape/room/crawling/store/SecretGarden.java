@@ -1,7 +1,7 @@
 package com.escape.room.crawling.store;
 
 import com.escape.room.crawling.Crawling;
-import com.escape.room.crawling.dto.ProgramResponse;
+import com.escape.room.dto.ProgramResponse;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,21 +17,27 @@ public class SecretGarden implements Crawling {
     @Override
     public List<ProgramResponse> crawling(String url){
 
-        List<ProgramResponse> responses = new ArrayList<>();
-
         Connection conn = Jsoup.connect(url);
 
+        return getProgramInfo(conn);
+    }
+
+    private List<ProgramResponse> getProgramInfo(Connection conn) {
+
+        List<ProgramResponse> responses = new ArrayList<>();
         try{
             Document document = conn.get();
             Elements programElements = document.getElementsByClass("theme_box");
 
             for (Element programElement : programElements) {
+                ProgramResponse response = new ProgramResponse();
                 String title = programElement.select("h3[class=\" h3_theme\"]").text();
-                System.out.println("title = " + title);
-
+                response.setTitle(title);
+                //System.out.println("title = " + title);
 
                 Elements timeElements = programElement.select(".time");
                 Elements endTimeElements = programElement.select(".end");
+                List<String> timeList = new ArrayList<>();
                 for (Element timeElement : timeElements) {
                     boolean status = true;
                     String time = timeElement.text();
@@ -41,8 +47,13 @@ public class SecretGarden implements Crawling {
                             break;
                         }
                     }
-                   if(status) System.out.println("  time = " + time);
+                    if(status) {
+                        timeList.add(time);
+                        //System.out.println("  time = " + time);
+                    }
                 }
+                response.setTimeInfoList(timeList);
+                responses.add(response);
             }
 
         }catch(IOException e){

@@ -1,12 +1,13 @@
 package com.escape.room.crawling.store;
 
 import com.escape.room.crawling.Crawling;
-import com.escape.room.crawling.dto.ProgramResponse;
+import com.escape.room.dto.ProgramResponse;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -18,26 +19,35 @@ public class NextEdition implements Crawling {
     @Override
     public List<ProgramResponse> crawling(String url){
 
-        List<ProgramResponse> responses = new ArrayList<>();
         Connection conn = Jsoup.connect(url);
 
+        return getProgramInfo(conn);
+    }
+
+    private List<ProgramResponse> getProgramInfo(Connection conn) {
+        List<ProgramResponse> responses = new ArrayList<>();
         try{
             Document document = conn.get();
             Elements programElements = document.getElementsByClass("text-center");
 
             for (Element programElement : programElements) {
                 String title = programElement.select("h2[class=\" mb5 font700\"]").text();
-                if(!StringUtils.isEmpty(title)){
+                if(!ObjectUtils.isEmpty(title)){
+                    ProgramResponse response = new ProgramResponse();
+                    response.setTitle(title);
                     System.out.println("title = " + title);
-                }
-
-                Elements timeElements = programElement.select("div.mb20");
-                for (Element timeElement : timeElements) {
-                    String status = timeElement.select("span.status").text();
-                    if("예약가능".equals(status)){
-                        String time = timeElement.select("span.time").text();
-                        System.out.println(" time = " + time + "/" + status);
+                    Elements timeElements = programElement.select("div.mb20");
+                    List<String> timeList = new ArrayList<>();
+                    for (Element timeElement : timeElements) {
+                        String status = timeElement.select("span.status").text();
+                        if("예약가능".equals(status)){
+                            String time = timeElement.select("span.time").text();
+                            timeList.add(time);
+                            System.out.println(" time = " + time + "/" + status);
+                        }
                     }
+                    response.setTimeInfoList(timeList);
+                    responses.add(response);
                 }
             }
 
@@ -45,6 +55,7 @@ public class NextEdition implements Crawling {
             e.printStackTrace();
         }
 
-        return responses;
+        return  responses;
+
     }
 }

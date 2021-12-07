@@ -1,6 +1,6 @@
 package com.escape.room.crawling;
 
-import com.escape.room.crawling.dto.ProgramResponse;
+import com.escape.room.dto.ProgramResponse;
 
 import java.util.List;
 
