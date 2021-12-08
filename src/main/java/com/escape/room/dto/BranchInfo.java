@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BranchInfoDto {
+public class BranchInfo {
 
     private Long id;
     private String name;
@@ -19,7 +19,7 @@ public class BranchInfoDto {
     @JsonIgnore
     private Long storeId;
 
-    public BranchInfoDto(Branch entity){
+    public BranchInfo(Branch entity){
         this.id = entity.getId();
         this.storeId = entity.getStore().getId();
         this.name = entity.getName();

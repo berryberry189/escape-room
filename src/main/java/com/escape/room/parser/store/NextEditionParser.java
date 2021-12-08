@@ -1,60 +1,63 @@
 package com.escape.room.parser.store;
 
 import com.escape.room.parser.Parser;
-import com.escape.room.dto.ProgramResponse;
+import com.escape.room.dto.ProgramInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.util.ObjectUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 public class NextEditionParser implements Parser {
 
     @Override
-    public List<ProgramResponse> crawling(String url){
+    public List<ProgramInfo> crawlingParser(String url){
 
-        Connection conn = Jsoup.connect(url);
+        log.info("##### Jsoup Parser 시작");
+        Connection connection = Jsoup.connect(url);
+        log.info("URL 연결 성공");
+        Document document = null;
 
-        return getProgramInfo(conn);
-    }
-
-    private List<ProgramResponse> getProgramInfo(Connection conn) {
-        List<ProgramResponse> responses = new ArrayList<>();
-        try{
-            Document document = conn.get();
-            Elements programElements = document.getElementsByClass("text-center");
-
-            for (Element programElement : programElements) {
-                String title = programElement.select("h2[class=\" mb5 font700\"]").text();
-                if(!ObjectUtils.isEmpty(title)){
-                    ProgramResponse response = new ProgramResponse();
-                    response.setTitle(title);
-                    System.out.println("title = " + title);
-                    Elements timeElements = programElement.select("div.mb20");
-                    List<String> timeList = new ArrayList<>();
-                    for (Element timeElement : timeElements) {
-                        String status = timeElement.select("span.status").text();
-                        if("예약가능".equals(status)){
-                            String time = timeElement.select("span.time").text();
-                            timeList.add(time);
-                            System.out.println(" time = " + time + "/" + status);
-                        }
-                    }
-                    response.setTimeInfoList(timeList);
-                    responses.add(response);
-                }
-            }
-
-        }catch(IOException e){
+        try {
+            document = connection.get();
+            log.info("전체 문서 획득");
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return  responses;
+        return getProgramInfo(document);
+    }
 
+    private List<ProgramInfo> getProgramInfo(Document document) {
+
+        List<ProgramInfo> programInfoList = new ArrayList<>();
+        Elements programElements = document.getElementsByClass("white-page-content");
+        log.info("테마 정보 엘리먼트 획득");
+
+        for (Element element : programElements) {
+            //제목
+            Elements titleElement = element.getElementsByTag("h2");
+            String title = titleElement.size() > 0 ? titleElement.get(0).text() : "";
+
+            //시간
+            Elements timeElements = element.getElementsByClass("res-true");
+            List<String> availableTimes = timeElements
+                    .stream()
+                    .map(e -> e.getElementsByTag("span").get(0).text())
+                    .collect(Collectors.toList());
+
+            if (!availableTimes.isEmpty()) {
+                programInfoList.add(new ProgramInfo(title, availableTimes));
+            }
+        }
+
+        return  programInfoList;
     }
 }

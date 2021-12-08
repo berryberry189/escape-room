@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public class MurderParkerParser implements Parser {
+public class SecretGarden implements Parser {
 
     @Override
     public List<ProgramInfo> crawlingParser(String url){
@@ -38,17 +38,24 @@ public class MurderParkerParser implements Parser {
 
         List<ProgramInfo> programInfoList = new ArrayList<>();
 
-        Elements programElements = document.getElementsByClass("reservTime");
+        Elements programElements = document.getElementsByClass("theme_box");
 
         for (Element programElement : programElements) {
-            String title = programElement.select("h3").text();
+            String title = programElement.select("h3[class=\" h3_theme\"]").text();
 
-            Elements timeElements = programElement.select("li");
+            Elements timeElements = programElement.select(".time");
+            Elements endTimeElements = programElement.select(".end");
             List<String> availableTimes = new ArrayList<>();
             for (Element timeElement : timeElements) {
-                String status = timeElement.select(".possibility").text();
-                if("예약가능".equals(status)){
-                    String time = timeElement.select(".time").text();
+                boolean status = true;
+                String time = timeElement.text();
+                for (Element endTimeElement : endTimeElements) {
+                    if(time.equals(endTimeElement.select(".time").text())){
+                        status = false;
+                        break;
+                    }
+                }
+                if(status) {
                     availableTimes.add(time);
                 }
             }

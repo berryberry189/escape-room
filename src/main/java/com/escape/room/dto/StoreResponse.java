@@ -14,7 +14,7 @@ public class StoreResponse {
 
     private Long id;
     private String name;
-    private List<BranchInfoDto> branchList;
+    private List<BranchInfo> branchList;
 
     public StoreResponse(Store entity){
         this.id = entity.getId();

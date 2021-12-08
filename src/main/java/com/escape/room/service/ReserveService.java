@@ -1,8 +1,8 @@
 package com.escape.room.service;
 
 import com.escape.room.parser.ParserHandler;
-import com.escape.room.dto.BranchInfoDto;
-import com.escape.room.dto.ProgramResponse;
+import com.escape.room.dto.BranchInfo;
+import com.escape.room.dto.ProgramInfo;
 import com.escape.room.dto.StoreResponse;
 import com.escape.room.entity.Branch;
 import com.escape.room.repository.BranchRepository;
@@ -33,19 +33,19 @@ public class ReserveService {
                 .map(StoreResponse::new)
                 .collect(Collectors.toList());
 
-        Map<Long, List<BranchInfoDto>> branchListMap = getBranchListMap();
+        Map<Long, List<BranchInfo>> branchListMap = getBranchListMap();
 
         storeList.forEach(s -> s.setBranchList(branchListMap.get(s.getId())));
 
         return storeList;
     }
 
-    private Map<Long, List<BranchInfoDto>> getBranchListMap() {
-        List<BranchInfoDto> branchList = branchRepository.findAll().stream()
-                .map(BranchInfoDto::new)
+    private Map<Long, List<BranchInfo>> getBranchListMap() {
+        List<BranchInfo> branchList = branchRepository.findAll().stream()
+                .map(BranchInfo::new)
                 .collect(Collectors.toList());
 
-        Map<Long, List<BranchInfoDto>> branchListMap = branchList.stream()
+        Map<Long, List<BranchInfo>> branchListMap = branchList.stream()
                 .collect(Collectors.groupingBy(b -> b.getStoreId()));
 
         return branchListMap;
@@ -58,7 +58,7 @@ public class ReserveService {
      * @param branchId
      * @return
      */
-    public List<ProgramResponse> getProgramList(Long storeId, Long branchId){
+    public List<ProgramInfo> getProgramList(Long storeId, Long branchId){
 
         Branch branch = branchRepository.findById(branchId)
                 .orElseThrow(()-> new IllegalArgumentException("지점이 존재하지 않습니다."));
