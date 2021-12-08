@@ -1,6 +1,6 @@
 package com.escape.room.service;
 
-import com.escape.room.crawling.CrawlingHandler;
+import com.escape.room.parser.ParserHandler;
 import com.escape.room.dto.BranchInfoDto;
 import com.escape.room.dto.ProgramResponse;
 import com.escape.room.dto.StoreResponse;
@@ -20,7 +20,7 @@ public class ReserveService {
 
     private final StoreRepository storeRepository;
     private final BranchRepository branchRepository;
-    private final CrawlingHandler crawlingHandler;
+    private final ParserHandler parserHandler;
 
     /**
      * 전체 가게 & 지점 목록
@@ -63,7 +63,7 @@ public class ReserveService {
         Branch branch = branchRepository.findById(branchId)
                 .orElseThrow(()-> new IllegalArgumentException("지점이 존재하지 않습니다."));
 
-        return crawlingHandler.getCrawlingData(storeId, branch.getUrl());
+        return parserHandler.getCrawlingData(storeId, branch.getUrl());
     }
 
 

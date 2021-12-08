@@ -1,10 +1,10 @@
-package com.escape.room.crawling;
+package com.escape.room.parser;
 
 import com.escape.room.dto.ProgramResponse;
 
 import java.util.List;
 
-public interface Crawling {
+public interface Parser {
 
     List<ProgramResponse> crawling(String url);
 

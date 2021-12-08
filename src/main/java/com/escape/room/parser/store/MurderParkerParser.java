@@ -1,6 +1,6 @@
-package com.escape.room.crawling.store;
+package com.escape.room.parser.store;
 
-import com.escape.room.crawling.Crawling;
+import com.escape.room.parser.Parser;
 import com.escape.room.dto.ProgramResponse;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MurderParker implements Crawling {
+public class MurderParkerParser implements Parser {
 
     @Override
     public List<ProgramResponse> crawling(String url){
