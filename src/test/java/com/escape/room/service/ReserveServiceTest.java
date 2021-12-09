@@ -30,7 +30,7 @@ class ReserveServiceTest {
         List<ProgramInfo> programList = service.getProgramList(1L,1L);
         for (ProgramInfo program : programList) {
             System.out.println("Title : " + program.getTitle());
-            for (String time : program.getTimeInfoList()) {
+            for (String time : program.getAvailableTimes()) {
                 System.out.println("  Time : " + time);
             }
         }
