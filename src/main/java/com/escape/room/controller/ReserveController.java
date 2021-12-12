@@ -39,6 +39,7 @@ public class ReserveController {
     public String getProgramList(Model model, @PathVariable Long storeId,
                                      @PathVariable Long branchId){
         model.addAttribute("programList", service.getProgramList(storeId, branchId));
+        model.addAttribute("branchInfo", service.getBranchInfo(branchId));
         return "/reserve/list";
     }
 

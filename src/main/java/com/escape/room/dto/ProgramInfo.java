@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 public class ProgramInfo {
 
-    private Long id;
     private String title;
     private List<String> availableTimes;
 
@@ -19,4 +18,5 @@ public class ProgramInfo {
         this.title = title;
         this.availableTimes = availableTimes;
     }
+
 }

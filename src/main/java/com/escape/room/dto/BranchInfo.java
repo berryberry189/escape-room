@@ -15,6 +15,11 @@ public class BranchInfo {
     private Long id;
     private String name;
     private Area area;
+    private String address;
+    private String phone;
+    private String url;
+
+    private String storeName;
 
     @JsonIgnore
     private Long storeId;
@@ -24,6 +29,10 @@ public class BranchInfo {
         this.storeId = entity.getStore().getId();
         this.name = entity.getName();
         this.area = entity.getArea();
+        this.storeName = entity.getStore().getName();
+        this.address = entity.getAddress();
+        this.phone = entity.getPhone();
+        this.url = entity.getUrl();
     }
 
 }

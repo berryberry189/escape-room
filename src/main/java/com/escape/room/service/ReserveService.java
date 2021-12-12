@@ -1,8 +1,8 @@
 package com.escape.room.service;
 
-import com.escape.room.parser.ParserHandler;
 import com.escape.room.dto.BranchInfo;
 import com.escape.room.dto.ProgramInfo;
+import com.escape.room.parser.ParserHandler;
 import com.escape.room.dto.StoreResponse;
 import com.escape.room.entity.Branch;
 import com.escape.room.repository.BranchRepository;
@@ -59,11 +59,24 @@ public class ReserveService {
      * @return
      */
     public List<ProgramInfo> getProgramList(Long storeId, Long branchId){
-
-        Branch branch = branchRepository.findById(branchId)
-                .orElseThrow(()-> new IllegalArgumentException("지점이 존재하지 않습니다."));
-
+        Branch branch = getBranch(branchId);
         return parserHandler.getCrawlingData(storeId, branch.getUrl());
+    }
+
+    /**
+     * 지점 정보
+     *
+     * @param branchId
+     * @return
+     */
+    public BranchInfo getBranchInfo(Long branchId){
+        Branch branch = getBranch(branchId);
+        return new BranchInfo(branch);
+    }
+
+    private Branch getBranch(Long branchId) {
+        return branchRepository.findById(branchId)
+                .orElseThrow(()-> new IllegalArgumentException("지점이 존재하지 않습니다."));
     }
 
 

@@ -1,12 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>reserve > list</title>
+    <title>예약 가능한 프로그램 & 시간</title>
 </head>
 <body>
+<ul>
+    <h2>
+        <span th:text="${branchInfo.storeName + ' ' + branchInfo.name + ' 예약가능 프로그램 목록'}"></span>
+    </h2>
+    <th:block th:each="program : ${programList}">
+        <li> <span th:text="${program.title}"></span>
+            <th:block th:each="time : ${program .availableTimes}">
+                <ul>
+                    <li>
+                        <a th:href="${branchInfo.url}">
+                            <span th:text="${time}"></span>
+                        </a>
+                    </li>
+                </ul>
+            </th:block>
+        </li>
+        <br>
+    </th:block>
+</ul>
 
-    예약가능한 프로그램 / 시간대
+<div>
+    <h3>지점 정보</h3>
+    주소 :  <span th:text="${branchInfo.address}"></span><br/>
+    전화번호 :  <span th:text="${branchInfo.phone}"></span>
+
+</div>
 
 </body>
 </html>
